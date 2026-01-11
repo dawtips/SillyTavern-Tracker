@@ -62,14 +62,17 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 async function changeProfileAndCompletionPreset(profileName, completionPresetName) {
     const ctx = getContext();
     let profileSwitched = false;
+	const connectionManagerSettings = ctx.extensionSettings.connectionManager;
+	const selectedProfile = connectionManagerSettings.profiles.find(x => x.id === connectionManagerSettings.selectedProfile).name;
 
-    if (extensionSettings.selectedProfile !== "current") {
+    if (extensionSettings.selectedProfile !== selectedProfile) {
         debug("changing connection profile to", profileName);
         await ctx.executeSlashCommandsWithOptions(`/profile ${profileName}`);
         profileSwitched = true;
     }
 
-    if (extensionSettings.selectedCompletionPreset !== "current") {
+	const selectedPreset = presetManager.getSelectedPresetName();
+    if (extensionSettings.selectedCompletionPreset !== selectedPreset) {
         debug("changing completion preset to", completionPresetName);
         await ctx.executeSlashCommandsWithOptions(`/preset ${completionPresetName}`);
     }
