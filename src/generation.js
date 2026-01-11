@@ -70,7 +70,8 @@ async function changeProfileAndCompletionPreset(profileName, completionPresetNam
         await ctx.executeSlashCommandsWithOptions(`/profile ${profileName}`);
         profileSwitched = true;
     }
-
+	
+	const presetManager = ctx.getPresetManager();
 	const selectedPreset = presetManager.getSelectedPresetName();
     if (extensionSettings.selectedCompletionPreset !== selectedPreset) {
         debug("changing completion preset to", completionPresetName);
